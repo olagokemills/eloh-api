@@ -1,0 +1,14 @@
+{
+  "name": "eloh",
+  "version": "1.0.0",
+  "description": "base api for the eloh ni app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "olagokemills",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
