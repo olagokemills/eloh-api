@@ -4,6 +4,9 @@ const config = require('./config/config');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+
+
+
 const app = express();
 
 //cors request
@@ -18,7 +21,8 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => {
     res.json({"message": "Welcome, human"})
 })
-
+//routes
+require('./routes/user.route')(app);
 //db connect
 mongoose.connect(config.dbUrl, {
     useNewUrlParser: true
