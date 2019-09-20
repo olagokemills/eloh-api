@@ -1,17 +1,25 @@
 const User = require('../models/user.model');
-
+const config = require('../config/config');
+const jwt = require('jsonwebtoken');
+  
 
 //Read all users
-exports.findAll = async (req, res, next) => {
-    try{
+exports.findAll = async(req, res, next) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
+       if(err){
+        res.sendStatus(403).end();
+       } });
+        try{
         const user = await User.find({});
         res.send(user);
         next();
-    }catch(err){
-        return next(res.json({
-            "message": "something went wrong"
-        }))
-    }
+            }catch(err){
+                return next(res.json({
+                    message: "something went wrong",
+                   // authData
+                })
+              )
+            }    
 }
 
 //Get One User
@@ -25,7 +33,66 @@ exports.findAll = async (req, res, next) => {
          res.send(user)
      }catch(err){
         return next(res.json({
-            "message": "Something went wrong"
+            message: "Something went wrong",
+            authData
         }))
      }
  }
+
+//Create User
+exports.createUser = async(req, res) => {
+        //Check for content
+        //Required fields check
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).send({ message: 'need email and password' })
+          }
+            console.log(req.body);
+          try {
+            const user = await User.create(req.body)
+           //const token = newToken(user)
+           jwt.sign({user}, config.secret, config.jwtExp, (err, token) => {
+            res.json({
+              token
+            });
+          });
+            return res.status(201).send({message:"Registration Ok!",token })
+            
+          } catch (e) {
+            return res.status(500).end()
+        }
+}
+
+exports.signIn = async (req, res) => {
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).send({ message: 'need email and password' })
+    }
+  
+    const invalid = { message: 'Invalid email and passoword combination' }
+  
+    try {
+      const user = await User.findOne({ email: req.body.email })
+        .select('email password')
+        .exec()
+  
+      if (!user) {
+        return res.status(401).send(invalid)
+      }
+  
+      const match = await user.checkPassword(req.body.password)
+  
+      if (!match) {
+        return res.status(401).send(invalid)
+      }
+  
+     // const token = newToken(user)
+      jwt.sign({user}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+        res.status(201).send({
+          token
+        });
+      });
+      //return res.status(201).send({ token })
+    } catch (e) {
+      console.error(e)
+      res.status(500).end()
+    }
+  }
