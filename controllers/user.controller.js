@@ -50,11 +50,11 @@ exports.createUser = async(req, res) => {
           try {
             const user = await User.create(req.body)
            //const token = newToken(user)
-           jwt.sign({user}, config.secret, config.jwtExp, (err, token) => {
-            res.json({
-              token
-            });
-          });
+        //    jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err) => {
+        //     res.status(201).send({
+        //       token
+        //     });
+        //   });
             return res.status(201).send({message:"Registration Ok!",token })
             
           } catch (e) {
@@ -85,7 +85,7 @@ exports.signIn = async (req, res) => {
       }
   
      // const token = newToken(user)
-      jwt.sign({user}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+      jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err, token) => {
         res.status(201).send({
           token
         });
@@ -95,4 +95,21 @@ exports.signIn = async (req, res) => {
       console.error(e)
       res.status(500).end()
     }
+  }
+
+  exports.deleteUser = async(req, res)=>{
+
+    try{
+        const user = await User.findByIdAndRemove({
+            _id: req.params.userid
+        })
+        // if(!removed){
+        //     return res.status(400).end();
+        // }
+            console.log(user);
+        return res.status(200).json({message: "Removed"})
+    }catch(e){
+        res.status(400).end();
+    }
+
   }

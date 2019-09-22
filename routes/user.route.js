@@ -14,6 +14,9 @@ module.exports = (app) => {
     //User signIn
     app.post('/api/user/signin', users.signIn);
 
+    //Delete User
+    app.delete('/api/userss/remove/:userid', users.deleteUser);
+
 
 
     // Verify Token
