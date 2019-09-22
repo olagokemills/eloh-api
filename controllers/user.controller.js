@@ -19,11 +19,15 @@ exports.findAll = async(req, res, next) => {
                    // authData
                 })
               )
-            }    
-}
+          }    
+    }
 
 //Get One User
  exports.findOne = async(req, res, next) => {
+  jwt.verify(req.token, config.secret, (err, authData) => {
+    if(err){
+     res.sendStatus(403).end();
+    } });
      try{
          const user = await User.findById(req.params.id);
          if(!user)
@@ -98,16 +102,18 @@ exports.signIn = async (req, res) => {
   }
 
   exports.deleteUser = async(req, res)=>{
-
+    jwt.verify(req.token, config.secret, (err, authData) => {
+      if(err){
+       res.sendStatus(403).end();
+      } });
     try{
         const user = await User.findByIdAndRemove({
-            _id: req.params.userid
+            _id: req.params.id
         })
-        // if(!removed){
-        //     return res.status(400).end();
-        // }
-            console.log(user);
-        return res.status(200).json({message: "Removed"})
+        if(!user){
+            return res.status(404).json({message: "User not found"});
+        }
+        return res.status(200).json({message: "User Removed"})
     }catch(e){
         res.status(400).end();
     }

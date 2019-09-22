@@ -15,7 +15,7 @@ module.exports = (app) => {
     app.post('/api/user/signin', users.signIn);
 
     //Delete User
-    app.delete('/api/userss/remove/:userid', users.deleteUser);
+    app.delete('/api/user/remove/:id', verifyToken, users.deleteUser);
 
 
 
