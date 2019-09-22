@@ -3,7 +3,7 @@ module.exports = (app) => {
     const users = require('../controllers/user.controller');
 
     //Get all users
-    app.get('/api/users', verifyToken, users.findAll);
+    app.get('/api/users', users.findAll);
 
     //Get specific user
     app.get('/api/user/:userId', verifyToken, users.findOne);
@@ -17,6 +17,8 @@ module.exports = (app) => {
     //Delete User
     app.delete('/api/user/remove/:id', verifyToken, users.deleteUser);
 
+    //Update User
+    app.put('/api/user/update/:userId', verifyToken, users.updateUser);
 
 
     // Verify Token

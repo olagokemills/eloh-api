@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    jwt.verify(req.token, config.secret, (err, authData) => {
-       if(err){
-        res.sendStatus(403).end();
-       } });
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //    if(err){
+    //     res.sendStatus(403).end();
+    //    } });
         try{
         const user = await User.find({});
         res.send(user);
@@ -118,4 +118,34 @@ exports.signIn = async (req, res) => {
         res.status(400).end();
     }
 
+  }
+
+
+  exports.updateUser = async (req, res) => {
+    
+    jwt.verify(req.token, config.secret, (err, authData) => {
+      if(err){
+       res.sendStatus(403).end();
+      } });
+
+    try {
+      const user = await User.findOneAndUpdate(
+        {
+          _id: req.params.userId
+        },
+        req.body,
+         { new: true}
+      )
+         .lean()
+         .exec()
+
+      if(!user){
+        return res.status(400).end()
+      }
+  
+      res.status(200).json({ data: user })
+    } catch (e) {
+      console.error(e)
+      res.status(400).end()
+    }
   }
