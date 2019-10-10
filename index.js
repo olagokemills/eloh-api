@@ -60,7 +60,7 @@ app.post('/upload', async (req, res) => {
 
 //routes
 require('./routes/user.route')(app);
-//require('./routes/item.route')(app);
+require('./routes/item.route')(app);
 //db connect
 mongoose.connect(config.dbUrl, {
     useNewUrlParser: true
