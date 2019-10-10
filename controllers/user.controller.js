@@ -64,7 +64,7 @@ exports.createUser = async(req, res) => {
           } catch (e) {
             return res.status(500).end()
         }
-}
+  }
 
 exports.signIn = async (req, res) => {
     if (!req.body.email || !req.body.password) {
