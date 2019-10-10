@@ -24,7 +24,7 @@ const itemSchema = new mongoose.Schema(
             trim: true
         },
         location: {
-            type: Array,
+            type: String,
             required: true,
             trim: true
         },

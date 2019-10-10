@@ -26,12 +26,12 @@ exports.findAll = async(req, res, next) => {
 exports.createItem = async(req, res) => {
         //Check for content
         //Required fields check
-        //const { name, email, password, city, level, phone, interests} = req.body;
+        const { name, description, category, posted_by, location, contact, isActive, display} = req.body;
 
-        // if (!req.body.username || !req.body.password) {
-        //     return res.status(400).send({ message: 'need email and password' })
-        //   }
-        //     console.log(req.body);
+        if (!name || !description || !category || !posted_by || !location || !contact || !isActive || !display ) {
+            return res.status(400).send({ message: 'need email and password' })
+          }
+
           try {
             const item = await Item.create(req.body)
            //const token = newToken(user)
@@ -40,9 +40,29 @@ exports.createItem = async(req, res) => {
         //       token
         //     });
         //   });
-            return res.status(201).send({message:"Registration Ok!"})
+            return res.status(201).send({message:"Item created!"})
             
           } catch (e) {
-            return res.status(500).end()
+            return res.status(500).send({message: e})
         }
+  }
+
+  
+exports.deleteItem = async(req, res)=>{
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
+    try{
+        const user = await User.findByIdAndRemove({
+            _id: req.params.id
+        })
+        if(!user){
+            return res.status(404).json({message: "User not found"});
+        }
+        return res.status(200).json({message: "User Removed"})
+    }catch(e){
+        res.status(400).end();
+    }
+
   }

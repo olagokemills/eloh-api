@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     // app.put('/api/items', item.editItem);
 
-    // app.delete('/api/items', item.deleteItem);
+    app.delete('/api/items', item.deleteItem);
 
     // app.put('/api/items', item.verifyItem);
 }

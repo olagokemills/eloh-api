@@ -10,7 +10,8 @@ const _ = require('lodash');
 const app = express();
 
 app.use(fileUpload({
-    createParentPath:true
+    createParentPath:true,
+    limits: { fileSize: 50 * 1024 * 1024 },
 }))
 //cors request
 app.use(cors());
@@ -40,7 +41,6 @@ app.post('/upload', async (req, res) => {
                     })
                 }else{
                     let avatar = req.files.avatar;
-    
                     avatar.mv('./uploads/' + avatar.name);
                     res.send({
                         status: true,
@@ -48,9 +48,11 @@ app.post('/upload', async (req, res) => {
                         data:{
                             name: avatar.name,
                             mimetype: avatar.mimetype,
-                            size:avatar.size
+                            size:avatar.size,
+                            path: avatar.tempFilePath
                         }
                     });
+                    
                 }
             }catch(err){
                 res.status(500).send(err);
