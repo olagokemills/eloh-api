@@ -54,15 +54,81 @@ exports.deleteItem = async(req, res)=>{
     //    res.sendStatus(403).end();
     //   } });
     try{
-        const user = await User.findByIdAndRemove({
+        const item = await Item.findByIdAndRemove({
             _id: req.params.id
         })
-        if(!user){
-            return res.status(404).json({message: "User not found"});
+        console.log(item);
+        if(!item){
+            return res.status(404).json({message: "item not found"});
         }
-        return res.status(200).json({message: "User Removed"})
+        return res.status(200).json({message: "item Removed"})
     }catch(e){
-        res.status(400).end();
+        res.status(400).send({message: "Something went wrong, please try again"});
     }
 
   }
+
+
+  
+exports.editItem = async (req, res) => {
+    
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
+
+    try {
+      const item = await Item.findOneAndUpdate(
+        {
+          _id: req.params.id
+        },
+        req.body,
+         { new: true}
+      )
+         .lean()
+         .exec()
+      if(!item){
+        return res.status(404).send({message: "Item not found"})
+      }
+      res.status(200).json({ data: item })
+    } catch (e) {
+      console.error(e)
+      res.status(400).end()
+    }
+  }
+
+
+  exports.verifyItem = async (req, res) => {
+    
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
+
+      //Required fields check
+      const {isActive} = req.body;
+
+      if (!isActive) {
+          return res.status(400).send({ message: 'Status required' })
+        }
+
+    try {
+      const item = await Item.findOneAndUpdate(
+        {
+          _id: req.params.id
+        },
+        req.body,
+         { new: true}
+      )
+         .lean()
+         .exec()
+      if(!item){
+        return res.status(404).send({message: "Item not found"})
+      }
+      res.status(200).json({ message: "Item Verified!" })
+    } catch (e) {
+      console.error(e)
+      res.status(500).end()
+    }
+  }
+

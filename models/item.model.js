@@ -38,7 +38,6 @@ const itemSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        posted_on: Date,
         display: {
             type: String,
             required:true,
