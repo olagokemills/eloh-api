@@ -5,6 +5,8 @@ module.exports = (app) => {
     //Get all items
     app.get('/api/items', verifyToken, item.findAll);
 
+    app.get('/api/item/:id', item.findOne);
+
     app.post('/api/items', verifyToken, item.createItem);
 
     app.put('/api/item/update/:id', verifyToken, item.editItem);

@@ -3,6 +3,28 @@ const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 
 
+
+//Get One User
+exports.findOne = async(req, res, next) => {
+  // jwt.verify(req.token, config.secret, (err, authData) => {
+  //   if(err){
+  //    res.sendStatus(403).end();
+  //   } });
+     try{
+         const item = await Item.findById(req.params.id);
+         if(!item)
+          {
+              res.status(404).send('Item not found');
+          }
+         res.send(item)
+     }catch(err){
+        return next(res.json({
+            message: "Something went wrong",
+        }))
+     }
+ }
+
+
 //Read all users
 exports.findAll = async(req, res, next) => {
     jwt.verify(req.token, config.secret, (err, authData) => {
