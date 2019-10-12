@@ -1,17 +1,17 @@
-const Item = require('../models/item.model');
+const Bid = require('../models/bid.model');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    jwt.verify(req.token, config.secret, (err, authData) => {
-       if(err){
-        res.sendStatus(403).end();
-       } });
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //    if(err){
+    //     res.sendStatus(403).end();
+    //    } });
         try{
-        const item = await Item.find({});
-        res.send(item);
+        const bid = await Bid.find({});
+        res.send(bid);
         next();
             }catch(err){
                 return next(res.json({
@@ -23,23 +23,18 @@ exports.findAll = async(req, res, next) => {
     }
 
 
-exports.createItem = async(req, res) => {
-  
-  jwt.verify(req.token, config.secret, (err, authData) => {
-    if(err){
-     res.sendStatus(403).end();
-    } });
+exports.createBid = async(req, res) => {
+        //Check for content
+        //Required fields check
+        const { name, itemId, category, bid_by, posted_by, amount, status} = req.body;
 
-        const { name, description, category, posted_by, location, contact, isActive, display} = req.body;
-
-        if (!name || !description || !category || !posted_by || !location || !contact || !isActive || !display ) {
-            return res.status(400).send({ message: 'need email and password' })
+        if (!name || !itemId || !category || !posted_by || !bid_by || !amount || !status ) {
+            return res.status(400).send({ message: 'Missing fields!' })
           }
 
           try {
-            const item = await Item.create(req.body)
-        
-            return res.status(201).send({message:"Item created!"})
+            const bid = await Bid.create(req.body)
+            return res.status(201).send({message:"Bid Submitted!"})
             
           } catch (e) {
             return res.status(500).send({message: e})
@@ -48,11 +43,10 @@ exports.createItem = async(req, res) => {
 
   
 exports.deleteItem = async(req, res)=>{
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
-
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
     try{
         const item = await Item.findByIdAndRemove({
             _id: req.params.id
@@ -72,10 +66,10 @@ exports.deleteItem = async(req, res)=>{
   
 exports.editItem = async (req, res) => {
     
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
 
     try {
       const item = await Item.findOneAndUpdate(
@@ -100,10 +94,10 @@ exports.editItem = async (req, res) => {
 
   exports.verifyItem = async (req, res) => {
     
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //   if(err){
+    //    res.sendStatus(403).end();
+    //   } });
 
       //Required fields check
       const {isActive} = req.body;
