@@ -30,8 +30,7 @@ const itemSchema = new mongoose.Schema(
         },
         isActive: {
             type: Boolean,
-            required: true,
-
+            default:false,
         },
         contact:{
             type:String,
@@ -41,7 +40,12 @@ const itemSchema = new mongoose.Schema(
         display: {
             type: String,
             required:true,
-
+        },
+        min_bid:{
+            type: String,
+        },
+        other_img:{
+            type:Array
         }
               
     },       

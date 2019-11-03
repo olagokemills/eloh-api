@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
   
 
 function newToken(user){
-  return jwt.sign({ id: user.id }, config.secret, {
+  return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, config.secret, {
     expiresIn: config.jwtExp
   })
 }
@@ -105,11 +105,11 @@ exports.signIn = async (req, res) => {
   
      // const token = newToken(user)
       jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err, token) => {
-        res.status(201).send({
+        res.status(200).send({ message: "Logged In",
           token
         });
       });
-      //return res.status(201).send({ token })
+      //return res.status(200).send({message:"Logged In", token })
     } catch (e) {
       console.error(e)
       res.status(500).end()
@@ -126,7 +126,7 @@ exports.signIn = async (req, res) => {
             _id: req.params.id
         })
         if(!user){
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).send({message: "User not found"});
         }
         return res.status(200).json({message: "User Removed"})
     }catch(e){
