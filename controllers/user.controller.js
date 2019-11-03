@@ -3,6 +3,13 @@ const config = require('../config/config');
 const jwt = require('jsonwebtoken');
   
 
+function newToken(user){
+  return jwt.sign({ id: user.id }, config.secret, {
+    expiresIn: config.jwtExp
+  })
+}
+
+
 //Read all users
 exports.findAll = async(req, res, next) => {
     jwt.verify(req.token, config.secret, (err, authData) => {
@@ -45,36 +52,33 @@ exports.findAll = async(req, res, next) => {
 
 //Create User
 exports.createUser = async(req, res) => {
-        //Check for content
-        //Required fields check
-        // if (!req.body.username || !req.body.password) {
-        //     return res.status(400).send({ message: 'need email and password' })
-        //   }
+       // Required fields check
+        if (!req.body.email || !req.body.password || !req.body.username ) {
+            return res.status(400).send({ message: 'Incomplete details, try again' })
+          }
             console.log(req.body);
 
-            const user = await User.findOne({ email: req.body.email, username: req.body.username })
-            .select('email username')
+            const user = await User.findOne({ email: req.body.email })
+            .select('email')
             .exec()
       
           if (user) {
-            return res.status(403).send({message:"User exists", })
+            return res.status(403).send({message:"User exists" }).end();
           }
-
-        //   try {
-        //     const user = await User.create(req.body)
-        //    const token = newToken(user)
-        //    jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err) => {
-        //     res.status(201).send({
-        //       token
-        //     });
-        //   });
-        //     return res.status(201).send({message:"Registration Ok!",token })
-            
-        //   } catch (err) { 
-        //     console.log(err);
-        //     return res.status(500).end()
+          try {
+            const user = await User.create(req.body)
+           const token = newToken(user)
+           jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err) => {
+            res.status(201).send({
+              token
+            });
+          });
+            return res.status(201).send({message:"Registration Ok!",token })
+          } catch (err) { 
+            console.log(err);
+            return res.status(500).end()
            
-        // }
+        }
   }
 
 exports.signIn = async (req, res) => {

@@ -1,10 +1,10 @@
 module.exports = (app) => {
 
     const users = require('../controllers/user.controller');
-    const veri =require('../utils/verifyToken');
+    const verify =require('../utils/verifyToken');
 
     //Get all users
-    app.get('/api/users',veri, users.findAll);
+    app.get('/api/users',verify, users.findAll);
 
     //Get specific user
     // app.get('/api/user/:userId', verifyToken, users.findOne);
