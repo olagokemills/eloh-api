@@ -1,4 +1,7 @@
-const jwt = require('jsonwebtoken')
+module.exports = (app) => {
+
+  const config = require('../config/config');
+  const jwt = require('jsonwebtoken');
 
 app.post('/api/posts', verifyToken, (req, res) => {  
     jwt.verify(req.token, 'secretkey', (err, authData) => {
@@ -35,6 +38,8 @@ function verifyToken(req, res, next) {
   
   }
 
+  
+
 
   app.post('/api/login', (req, res) => {
     // Mock user
@@ -50,3 +55,34 @@ function verifyToken(req, res, next) {
       });
     });
   });
+ 
+  
+
+  app.post('/upload', async (req, res) => {
+    try{
+       if(!req.files){
+           res.send({
+               status: false,
+               message: 'No file here'
+           })
+       }else{
+           let avatar = req.files.avatar;
+           avatar.mv('./uploads/' + avatar.name);
+           res.send({
+               status: true,
+               message:'File has been seen',
+               data:{
+                   name: avatar.name,
+                   mimetype: avatar.mimetype,
+                   size:avatar.size,
+                   path: avatar.tempFilePath
+               }
+           });
+           
+       }
+   }catch(err){
+       res.status(500).send(err);
+   }
+})
+
+}

@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //    if(err){
-    //     res.sendStatus(403).end();
-    //    } });
+    jwt.verify(req.token, config.secret, (err, authData) => {
+       if(err){
+        res.sendStatus(403).end();
+       } });
         try{
         const user = await User.find({});
         res.send(user);
@@ -47,23 +47,34 @@ exports.findAll = async(req, res, next) => {
 exports.createUser = async(req, res) => {
         //Check for content
         //Required fields check
-        if (!req.body.username || !req.body.password) {
-            return res.status(400).send({ message: 'need email and password' })
-          }
+        // if (!req.body.username || !req.body.password) {
+        //     return res.status(400).send({ message: 'need email and password' })
+        //   }
             console.log(req.body);
-          try {
-            const user = await User.create(req.body)
-           //const token = newToken(user)
+
+            const user = await User.findOne({ email: req.body.email, username: req.body.username })
+            .select('email username')
+            .exec()
+      
+          if (user) {
+            return res.status(403).send({message:"User exists", })
+          }
+
+        //   try {
+        //     const user = await User.create(req.body)
+        //    const token = newToken(user)
         //    jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err) => {
         //     res.status(201).send({
         //       token
         //     });
         //   });
-            return res.status(201).send({message:"Registration Ok!",token })
+        //     return res.status(201).send({message:"Registration Ok!",token })
             
-          } catch (e) {
-            return res.status(500).end()
-        }
+        //   } catch (err) { 
+        //     console.log(err);
+        //     return res.status(500).end()
+           
+        // }
   }
 
 exports.signIn = async (req, res) => {

@@ -1,46 +1,25 @@
 module.exports = (app) => {
 
     const users = require('../controllers/user.controller');
+    const veri =require('../utils/verifyToken');
 
     //Get all users
-    app.get('/api/users',verifyToken, users.findAll);
+    app.get('/api/users',veri, users.findAll);
 
     //Get specific user
-    app.get('/api/user/:userId', verifyToken, users.findOne);
+    // app.get('/api/user/:userId', verifyToken, users.findOne);
 
     //Create User
     app.post('/api/users/', users.createUser);
 
-    //User signIn
-    app.post('/api/user/signin', users.signIn);
+    // //User signIn
+    // app.post('/api/user/signin', users.signIn);
 
-    //Delete User
-    app.delete('/api/user/remove/:id', verifyToken, users.deleteUser);
+    // //Delete User
+    // app.delete('/api/user/remove/:id', verifyToken, users.deleteUser);
 
-    //Update User
-    app.put('/api/user/update/:userId', verifyToken, users.updateUser);
-
-
-    // Verify Token
-    function verifyToken(req, res, next){
-    // Get auth header value
-    const bearerHeader = req.headers['authorization'];
-    // Check if bearer is undefined
-    if(typeof bearerHeader !== 'undefined') {
-      // Split at the space
-      const bearer = bearerHeader.split(' ');
-      // Get token from array
-      const bearerToken = bearer[1];
-      // Set the token
-      req.token = bearerToken;
-      // Next middleware
-      next();
-    } else {
-      // Forbidden
-      res.sendStatus(403);
-    }
-  
-  }
+    // //Update User
+    // app.put('/api/user/update/:userId', verifyToken, users.updateUser);
 
 
 

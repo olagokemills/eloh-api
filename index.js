@@ -6,8 +6,28 @@ const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const _ = require('lodash');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express')
 
 const app = express();
+
+
+const swaggerOptions = {
+    swaggerDefinition:{
+        info:{
+            title: 'Customer API',
+            description: 'Customer API Information',
+            contact:{
+                name:"Olagoke"
+            },
+            servers: ["http://localhost:3000"]
+        }
+    },
+    apis:["app.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(fileUpload({
     createParentPath:true,
@@ -29,41 +49,8 @@ app.get('/', (req, res) => {
 
 })
 
-
-
-
-app.post('/upload', async (req, res) => {
-             try{
-                if(!req.files){
-                    res.send({
-                        status: false,
-                        message: 'No file here'
-                    })
-                }else{
-                    let avatar = req.files.avatar;
-                    avatar.mv('./uploads/' + avatar.name);
-                    res.send({
-                        status: true,
-                        message:'File has been seen',
-                        data:{
-                            name: avatar.name,
-                            mimetype: avatar.mimetype,
-                            size:avatar.size,
-                            path: avatar.tempFilePath
-                        }
-                    });
-                    
-                }
-            }catch(err){
-                res.status(500).send(err);
-            }
-        })
-
-
 //routes
-require('./routes/user.route')(app);
-require('./routes/item.route')(app);
-require('./routes/bids.route')(app);
+require('./routes/index.js')(app);
 //db connect
 mongoose.connect(config.dbUrl, {
     useNewUrlParser: true

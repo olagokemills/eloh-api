@@ -27,10 +27,10 @@ exports.findOne = async(req, res, next) => {
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    jwt.verify(req.token, config.secret, (err, authData) => {
-       if(err){
-        res.sendStatus(403).end();
-       } });
+    // jwt.verify(req.token, config.secret, (err, authData) => {
+    //    if(err){
+    //     res.sendStatus(403).end();
+    //    } });
         try{
         const item = await Item.find({});
         res.send(item);
