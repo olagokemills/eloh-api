@@ -1,20 +1,22 @@
+
+const item = require('../controllers/item.controller');
+const check = require('../utils/verifyToken');
+const verify = require('../utils/verify');
+const admin = require('../utils/admin')
+
 module.exports = (app) => {
 
-    const item = require('../controllers/item.controller');
-    const verify = require('../utils/verifyToken');
-    const admin = require('../utils/admin');
-
     //Get all items
-    app.get('/api/items', verify, item.findAll);
+    app.get('/api/items', item.findAll);
 
-    app.get('/api/item/:id', item.findOne);
+    app.get('/api/item/:id',  item.findOne);
 
-    app.post('/api/items', verify, item.createItem);
+    app.post('/api/items', [check, verify], item.createItem);
 
-    app.put('/api/item/update/:id', verify, item.editItem);
+    app.put('/api/item/update/:id', [check, verify], item.editItem);
 
-    app.delete('/api/item/remove/:id',verify, item.deleteItem);
+    app.delete('/api/item/remove/:id',[check, verify], item.deleteItem);
 
-    app.put('/api/items/verify/:id', verify, item.verifyItem);
+    app.put('/api/items/verify/:id', [check, verify], item.verifyItem);
 
 }

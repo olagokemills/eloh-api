@@ -1,17 +1,19 @@
+const bid = require('../controllers/bid.controller');
+const check = require('../utils/verifyToken');
+const verify = require('../utils/verify');
+
 module.exports = (app) => {
 
-    const bid = require('../controllers/bid.controller');
-
     //Get all items
-    app.get('/api/bids', bid.findAll);
+    app.get('/api/bids',[check, verify], bid.findAll);
 
-    app.get('/api/bid/:id', bid.findOne);
+    app.get('/api/bid/:id', [check, verify], bid.findOne);
 
-    app.post('/api/bid', bid.createBid);
+    app.post('/api/bid', [check, verify], bid.createBid);
 
-    app.put('/api/bid/update/:id', bid.updateBid);
+    app.put('/api/bid/update/:id', [check, verify], bid.updateBid);
 
-    app.delete('/api/bid/remove/:id', bid.deleteBid);
+    app.delete('/api/bid/remove/:id',[check, verify], bid.deleteBid);
 
-    app.put('/api/bids/verify/:id', bid.acceptBid);
+    // app.put('/api/bids/verify/:id',[check, verify], bid.acceptBid);
 }

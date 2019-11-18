@@ -1,14 +1,7 @@
 const Bid = require('../models/bid.model');
-const config = require('../config/config');
-const jwt = require('jsonwebtoken');
-
 
 //Get One User
 exports.findOne = async(req, res, next) => {
-  // jwt.verify(req.token, config.secret, (err, authData) => {
-  //   if(err){
-  //    res.sendStatus(403).end();
-  //   } });
      try{
          const bid = await Bid.findById(req.params.id);
          if(!bid)
@@ -27,10 +20,6 @@ exports.findOne = async(req, res, next) => {
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //    if(err){
-    //     res.sendStatus(403).end();
-    //    } });
         try{
         const bid = await Bid.find({});
         res.send(bid);
@@ -65,10 +54,6 @@ exports.createBid = async(req, res) => {
 
   
 exports.deleteBid = async(req, res)=>{
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //   if(err){
-    //    res.sendStatus(403).end();
-    //   } });
     try{
         const bid = await Bid.findByIdAndRemove({
             _id: req.params.id
@@ -87,12 +72,6 @@ exports.deleteBid = async(req, res)=>{
 
   
 exports.updateBid = async (req, res) => {
-    
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //   if(err){
-    //    res.sendStatus(403).end();
-    //   } });
-
     try {
       const bid = await Bid.findOneAndUpdate(
         {
@@ -114,49 +93,43 @@ exports.updateBid = async (req, res) => {
   }
 
 
-  exports.acceptBid = async (req, res) => {
-    
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //   if(err){
-    //    res.sendStatus(403).end();
-    //   } });
+  // exports.acceptBid = async (req, res) => {
+  //     //Required fields check
+  //     const {status} = req.body;
 
-      //Required fields check
-      const {status} = req.body;
+  //     if (!status) {
+  //         return res.status(400).send({ message: 'Status required' })
+  //       }
 
-      if (!status) {
-          return res.status(400).send({ message: 'Status required' })
-        }
+  //   try {
 
-    try {
+  //     const bid =  await Bid.findById(
+  //        req.params.id
+  //     )
+  //     if(!bid){
+  //       return res.status(404).send({message: "Bid not found"})
+  //     }
+  //     if(bid.status == true){
+  //       return res.status(403).send({message: "Bid already accepted!"}).end();
+  //     }
 
-      const bid =  await Bid.findById(
-         req.params.id
-      )
-      if(!bid){
-        return res.status(404).send({message: "Bid not found"})
-      }
-      if(bid.status == true){
-        return res.status(403).send({message: "Bid already accepted!"}).end();
-      }
-
-      const newbid = await Bid.findOneAndUpdate(
-        {
-          _id: req.params.id
-        },
-        req.body,
-         { new: true}
-      )
-         .lean()
-         .exec()
-         console.log(newbid)
-      if(!newbid){
-        return res.status(404).send({message: "Bid not found"})
-      }
-      res.status(200).json({ message: "Item Verified!" })
-    } catch (e) {
-      console.error(e)
-      res.status(500).end()
-    }
-  }
+  //     const newbid = await Bid.findOneAndUpdate(
+  //       {
+  //         _id: req.params.id
+  //       },
+  //       req.body,
+  //        { new: true}
+  //     )
+  //        .lean()
+  //        .exec()
+  //        console.log(newbid)
+  //     if(!newbid){
+  //       return res.status(404).send({message: "Bid not found"})
+  //     }
+  //     res.status(200).json({ message: "Bid  Verified!" })
+  //   } catch (e) {
+  //     console.error(e)
+  //     res.status(500).end()
+  //   }
+  // }
 

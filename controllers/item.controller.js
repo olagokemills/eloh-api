@@ -6,10 +6,7 @@ const jwt = require('jsonwebtoken');
 
 //Get One User
 exports.findOne = async(req, res, next) => {
-  // jwt.verify(req.token, config.secret, (err, authData) => {
-  //   if(err){
-  //    res.sendStatus(403).end();
-  //   } });
+
      try{
          const item = await Item.findById(req.params.id);
          if(!item)
@@ -27,10 +24,6 @@ exports.findOne = async(req, res, next) => {
 
 //Read all users
 exports.findAll = async(req, res, next) => {
-    // jwt.verify(req.token, config.secret, (err, authData) => {
-    //    if(err){
-    //     res.sendStatus(403).end();
-    //    } });
         try{
         const item = await Item.find({});
         res.send(item);
@@ -38,7 +31,6 @@ exports.findAll = async(req, res, next) => {
             }catch(err){
                 return next(res.json({
                     message: "something went wrong",
-                   // authData
                 })
               )
           }    
@@ -46,16 +38,11 @@ exports.findAll = async(req, res, next) => {
 
 
 exports.createItem = async(req, res) => {
-  
-  jwt.verify(req.token, config.secret, (err, authData) => {
-    if(err){
-     res.sendStatus(403).end();
-    } });
 
-        const { name, description, category, posted_by, location, contact, isActive, display} = req.body;
+  const { name, description, category, posted_by, location, contact, display} = req.body;
 
-        if (!name || !description || !category || !posted_by || !location || !contact || !isActive || !display ) {
-            return res.status(400).send({ message: 'need email and password' })
+        if (!name || !description || !category || !posted_by || !location || !contact || !display ) {
+            return res.status(400).send({ message: 'Missing fields, please retry' })
           }
 
           try {
@@ -64,16 +51,12 @@ exports.createItem = async(req, res) => {
             return res.status(201).send({message:"Item created!"})
             
           } catch (e) {
-            return res.status(500).send({message: e})
+            return res.status(500).send({message: "Something went wrong"})
         }
   }
 
   
 exports.deleteItem = async(req, res)=>{
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
 
     try{
         const item = await Item.findByIdAndRemove({
@@ -93,12 +76,6 @@ exports.deleteItem = async(req, res)=>{
 
   
 exports.editItem = async (req, res) => {
-    
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
-
     try {
       const item = await Item.findOneAndUpdate(
         {
@@ -121,12 +98,6 @@ exports.editItem = async (req, res) => {
 
 
   exports.verifyItem = async (req, res) => {
-    
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if(err){
-       res.sendStatus(403).end();
-      } });
-
       //Required fields check
       const {isActive} = req.body;
 

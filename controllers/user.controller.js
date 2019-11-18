@@ -67,13 +67,13 @@ exports.createUser = async(req, res) => {
           }
           try {
             const user = await User.create(req.body)
-           const token = newToken(user)
+           //const token = newToken(user)
            jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err) => {
             res.status(201).send({
               token
             });
           });
-            return res.status(201).send({message:"Registration Ok!",token })
+            return res.status(201).send({message:"Registration Ok!",token, user })
           } catch (err) { 
             console.log(err);
             return res.status(500).end()
@@ -90,7 +90,7 @@ exports.signIn = async (req, res) => {
   
     try {
       const user = await User.findOne({ email: req.body.email })
-        .select('email password')
+        .select('email password isAdmin')
         .exec()
   
       if (!user) {
@@ -102,14 +102,12 @@ exports.signIn = async (req, res) => {
       if (!match) {
         return res.status(401).send(invalid)
       }
-  
-     // const token = newToken(user)
-      jwt.sign({user}, config.secret, { expiresIn: config.jwtExp }, (err, token) => {
+      jwt.sign({ _id: user.id, isAdmin: user.isAdmin, email: user.email}, config.secret, { expiresIn: config.jwtExp }, (err, token) => {
         res.status(200).send({ message: "Logged In",
-          token
+          token,
+          user
         });
       });
-      //return res.status(200).send({message:"Logged In", token })
     } catch (e) {
       console.error(e)
       res.status(500).end()
