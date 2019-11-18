@@ -17,6 +17,6 @@ module.exports = (app) => {
 
     app.delete('/api/item/remove/:id',[check, verify], item.deleteItem);
 
-    app.put('/api/items/verify/:id', [check, verify], item.verifyItem);
+    app.put('/api/items/verify/:id', [check, verify, admin], item.verifyItem);
 
 }

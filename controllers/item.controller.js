@@ -62,7 +62,6 @@ exports.deleteItem = async(req, res)=>{
         const item = await Item.findByIdAndRemove({
             _id: req.params.id
         })
-        console.log(item);
         if(!item){
             return res.status(404).json({message: "item not found"});
         }
@@ -82,7 +81,7 @@ exports.editItem = async (req, res) => {
           _id: req.params.id
         },
         req.body,
-         { new: true}
+         { new: true, useFindAndModify: false}
       )
          .lean()
          .exec()
@@ -91,7 +90,6 @@ exports.editItem = async (req, res) => {
       }
       res.status(200).json({ data: item })
     } catch (e) {
-      console.error(e)
       res.status(400).end()
     }
   }
@@ -118,7 +116,7 @@ exports.editItem = async (req, res) => {
       if(!item){
         return res.status(404).send({message: "Item not found"})
       }
-      res.status(200).json({ message: "Item Verified!" })
+      res.status(200).json({ message: "Status Changed!" })
     } catch (e) {
       console.error(e)
       res.status(500).end()
