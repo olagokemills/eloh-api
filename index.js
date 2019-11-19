@@ -3,11 +3,8 @@ const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const _ = require('lodash');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express')
 mongoose.set('useCreateIndex', true);
 const app = express();
 

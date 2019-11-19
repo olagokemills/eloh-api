@@ -5,7 +5,7 @@ const verify = require('../utils/verify');
 module.exports = (app) => {
 
     //Get all items
-    app.get('/api/bids',[check, verify], bid.findAll);
+    app.get('/api/bids', [check, verify], bid.findAll);
 
     app.get('/api/bid/:id', [check, verify], bid.findOne);
 
@@ -15,5 +15,5 @@ module.exports = (app) => {
 
     app.delete('/api/bid/remove/:id',[check, verify], bid.deleteBid);
 
-    // app.put('/api/bids/verify/:id',[check, verify], bid.acceptBid);
+    app.put('/api/bids/verify/:id',[check, verify], bid.acceptBid);
 }

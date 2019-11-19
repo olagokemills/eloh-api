@@ -37,9 +37,9 @@ exports.findAll = async(req, res, next) => {
 exports.createBid = async(req, res) => {
         //Check for content
         //Required fields check
-        const { name, itemId, category, bid_by, posted_by, amount, status} = req.body;
+        const { name, itemId, category, bid_by, posted_by, amount} = req.body;
 
-        if (!name || !itemId || !category || !posted_by || !bid_by || !amount || !status ) {
+        if (!name || !itemId || !category || !posted_by || !bid_by || !amount ) {
             return res.status(400).send({ message: 'Missing fields!' })
           }
 
@@ -93,43 +93,42 @@ exports.updateBid = async (req, res) => {
   }
 
 
-  // exports.acceptBid = async (req, res) => {
-  //     //Required fields check
-  //     const {status} = req.body;
+  exports.acceptBid = async (req, res) => {
+      //Required fields check
+      const {status} = req.body;
 
-  //     if (!status) {
-  //         return res.status(400).send({ message: 'Status required' })
-  //       }
+      if (!status) {
+          return res.status(400).send({ message: 'Status required' })
+        }
 
-  //   try {
+    try {
 
-  //     const bid =  await Bid.findById(
-  //        req.params.id
-  //     )
-  //     if(!bid){
-  //       return res.status(404).send({message: "Bid not found"})
-  //     }
-  //     if(bid.status == true){
-  //       return res.status(403).send({message: "Bid already accepted!"}).end();
-  //     }
+      const bid =  await Bid.findById(
+         req.params.id
+      )
+      if(!bid){
+        return res.status(404).send({message: "Bid not found"})
+      }
+      if(!status && bid.status == true){
+        return res.status(403).send({message: "Bid already accepted!"}).end();
+      }
 
-  //     const newbid = await Bid.findOneAndUpdate(
-  //       {
-  //         _id: req.params.id
-  //       },
-  //       req.body,
-  //        { new: true}
-  //     )
-  //        .lean()
-  //        .exec()
-  //        console.log(newbid)
-  //     if(!newbid){
-  //       return res.status(404).send({message: "Bid not found"})
-  //     }
-  //     res.status(200).json({ message: "Bid  Verified!" })
-  //   } catch (e) {
-  //     console.error(e)
-  //     res.status(500).end()
-  //   }
-  // }
+      const newbid = await Bid.findOneAndUpdate(
+        {
+          _id: req.params.id
+        },
+        req.body,
+         { new: true}
+      )
+         .lean()
+         .exec()
+         .select('itemId')
+      if(!newbid){
+        return res.status(404).send({message: "Bid not found"})
+      }
+      res.status(200).json({ message: "Bid  Changed!" })
+    } catch (e) {
+      res.status(500).end()
+    }
+  }
 
