@@ -56,7 +56,6 @@ exports.createUser = async(req, res) => {
         if (!req.body.email || !req.body.password || !req.body.username ) {
             return res.status(400).send({ message: 'Incomplete details, try again' })
           }
-            console.log(req.body);
 
             const user = await User.findOne({ email: req.body.email })
             .select('email')

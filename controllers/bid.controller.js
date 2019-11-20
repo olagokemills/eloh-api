@@ -93,7 +93,7 @@ exports.updateBid = async (req, res) => {
   }
 
 
-  exports.acceptBid = async (req, res) => {
+exports.acceptBid = async (req, res) => {
       //Required fields check
       const {status} = req.body;
 
@@ -109,10 +109,17 @@ exports.updateBid = async (req, res) => {
       if(!bid){
         return res.status(404).send({message: "Bid not found"})
       }
-      if(!status && bid.status == true){
-        return res.status(403).send({message: "Bid already accepted!"}).end();
+      if(status == 'true' && bid.status == true){
+        return res.status(403).send({message: "Bid already accepted"}).end();
       }
 
+      const found = await Bid.find({ itemId: bid.itemId })
+      console.log(found)
+      for(let i = 0; i < found.length; i++) {
+        if (found[i].status == true && status == 'true') {
+          return res.status(403).send({message: "Bid already accepted!"}).end();
+        }
+      }      
       const newbid = await Bid.findOneAndUpdate(
         {
           _id: req.params.id
@@ -122,12 +129,12 @@ exports.updateBid = async (req, res) => {
       )
          .lean()
          .exec()
-         .select('itemId')
       if(!newbid){
         return res.status(404).send({message: "Bid not found"})
       }
       res.status(200).json({ message: "Bid  Changed!" })
     } catch (e) {
+      console.log(e);
       res.status(500).end()
     }
   }
