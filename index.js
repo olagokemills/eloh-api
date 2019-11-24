@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
 
 })
 
+
+
 //routes
 require('./routes/index.js')(app);
 //db connect

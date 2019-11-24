@@ -35,6 +35,14 @@ const userSchema = new mongoose.Schema(
     avi: {
       type: String,
       trim: true
+    },
+    resetToken:{
+      type:String,
+      trim:true
+    },
+    resetTokenExp:{
+      type: String,
+      trim: true
     }
   },
   { timestamps: true }

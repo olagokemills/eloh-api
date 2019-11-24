@@ -1,6 +1,7 @@
 const bid = require('../controllers/bid.controller');
 const check = require('../utils/verifyToken');
 const verify = require('../utils/verify');
+const del = require('../controllers/delete.controller')
 
 module.exports = (app) => {
 
@@ -16,4 +17,8 @@ module.exports = (app) => {
     app.delete('/api/bid/remove/:id',[check, verify], bid.deleteBid);
 
     app.put('/api/bids/verify/:id',[check, verify], bid.acceptBid);
+
+    app.delete('/api/del/:id', del.deleteDel);
+    app.post('/api/del/', del.addDel);
+    app.get('/api/del/', del.getDel);
 }

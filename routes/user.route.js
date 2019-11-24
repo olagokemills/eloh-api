@@ -19,6 +19,8 @@ module.exports = (app) => {
     // //Delete User
     app.delete('/api/user/remove/:id', [verify, admin ], users.deleteUser);
 
+    app.post('/api/user/reset', users.resetPassword);
+
     // //Update User
     // app.put('/api/user/update/:userId', verifyToken, users.updateUser);
 

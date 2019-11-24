@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
-  
+const crypto = require('crypto')
 
 function newToken(user){
   return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, config.secret, {
@@ -161,3 +161,29 @@ exports.signIn = async (req, res) => {
       res.status(400).end()
     }
   }
+
+
+  exports.resetPassword = (req,res) =>{
+          crypto.randomBytes(32,(err, buffer)=>{
+            if(err)
+            {
+              console.log(err)
+            }
+            const keys = buffer.toString('hex')
+            const user =  User.findOne({ email: req.body.email })
+                .then(user => {
+                  if(!user){
+                  return res.status(404).json({ message: 'User not found, please try again'}).end()
+                }
+                user.resetToken = keys
+                user.resetTokenExp = Date.now() + 360000;
+                return user.save();
+              })
+              .then(result => {
+                console.log('done');
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          });
+  };
