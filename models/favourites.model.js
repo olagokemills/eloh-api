@@ -6,7 +6,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId
 
 const favouritesSchema = new mongoose.Schema(
     {
-        item_name:{
+        itemName:{
             type: String,
             required: true,
             trim: true
@@ -26,7 +26,7 @@ const favouritesSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        UserId:{
+        userId:{
             type: ObjectId,
             required: true,
             trim: true
