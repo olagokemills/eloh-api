@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
+const soft = require('mongoose-delete');
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -75,5 +77,5 @@ userSchema.methods.checkPassword = function(password) {
     })
   })
 }
-
+userSchema.plugin(soft);
 module.exports = mongoose.model('User', userSchema)

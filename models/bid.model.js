@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-//const bcrypt = require('bcrypt')
+
+const soft = require('mongoose-delete');
 
 var ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -46,5 +47,5 @@ const bidSchema = new mongoose.Schema(
 
 )
 
-
+bidSchema.plugin(soft);
 module.exports = mongoose.model('Bid', bidSchema)

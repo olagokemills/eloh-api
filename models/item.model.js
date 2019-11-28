@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
-//const bcrypt = require('bcrypt')
 
+const soft = require('mongoose-delete');
+
+var ObjectId = mongoose.Schema.Types.ObjectId
 const itemSchema = new mongoose.Schema(
     {
         name:{
@@ -22,6 +24,11 @@ const itemSchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true
+        },
+        userId:{
+            type: ObjectId,
+            required:true,
+            trim:true,
         },
         location: {
             type: String,
@@ -53,5 +60,5 @@ const itemSchema = new mongoose.Schema(
      { timestamps: true }
 
 )
-
+itemSchema.plugin(soft);
 module.exports = mongoose.model('Item', itemSchema)
