@@ -11,7 +11,11 @@ module.exports = (app) => {
 
     app.get('/api/item/:id',  item.findOne);
 
+    app.get('/api/items/getUserItem/:id', [check, verify], item.getByUserId)
+
     app.post('/api/items', [check, verify], item.createItem);
+
+    app.get('/api/items/category/:cat', item.findCategory);
 
     app.put('/api/item/update/:id', [check, verify], item.editItem);
 

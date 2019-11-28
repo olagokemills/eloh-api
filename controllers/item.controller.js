@@ -36,6 +36,33 @@ exports.findAll = async(req, res, next) => {
           }    
     }
 
+  //Read all users
+exports.findCategory = async(req, res, next) => {
+  try{
+  const item = await Item.find({category: req.params.cat});
+  res.send(item);
+  next();
+      }catch(err){
+          return next(res.json({
+              message: "something went wrong",
+          })
+        )
+    }    
+}
+
+exports.getByUserId = async(req, res, next) => {
+  try{
+  const item = await Item.find({userId: req.params.id});
+  res.send(item);
+  next();
+      }catch(err){
+          return next(res.json({
+              message: "something went wrong",
+          })
+        )
+    }    
+}
+
 
 exports.createItem = async(req, res) => {
 
