@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 exports.findOne = async(req, res, next) => {
 
      try{
-         const item = await Item.findById(req.params.id);
+         const item = await Item.find({_id:req.params.id, deleted:{$eq:false}});
          if(!item)
           {
               res.status(404).send('Item not found');
@@ -86,7 +86,7 @@ exports.createItem = async(req, res) => {
 exports.deleteItem = async(req, res)=>{
 
     try{
-        const item = await Item.findByIdAndRemove({
+        const item = await Item.deleteById({
             _id: req.params.id
         })
         if(!item){

@@ -1,7 +1,6 @@
 const bid = require('../controllers/bid.controller');
 const check = require('../utils/verifyToken');
 const verify = require('../utils/verify');
-const del = require('../controllers/delete.controller')
 
 module.exports = (app) => {
 

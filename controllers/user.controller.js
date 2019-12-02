@@ -17,7 +17,7 @@ exports.findAll = async(req, res, next) => {
         res.sendStatus(403).end();
        } });
         try{
-        const user = await User.find({});
+        const user = await User.find({deleted:{$eq: false}});
         res.send(user);
         next();
             }catch(err){
@@ -36,7 +36,7 @@ exports.findAll = async(req, res, next) => {
      res.sendStatus(403).end();
     } });
      try{
-         const user = await User.findById(req.params.id);
+         const user = await User.find({_id:req.params.id, deleted:{$eq:false}});
          if(!user)
           {
               res.status(404).send('User not found');
@@ -72,7 +72,7 @@ exports.createUser = async(req, res) => {
               token
             });
           });
-            return res.status(201).send({message:"Registration Ok!",token, user })
+            return res.status(201).send({message:"Registration Ok!", user })
           } catch (err) { 
             console.log(err);
             return res.status(500).end()
@@ -119,7 +119,7 @@ exports.signIn = async (req, res) => {
        res.sendStatus(403).end();
       } });
     try{
-        const user = await User.findByIdAndRemove({
+        const user = await User.deleteById({
             _id: req.params.id
         })
         if(!user){

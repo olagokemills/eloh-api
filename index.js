@@ -28,8 +28,6 @@ app.get('/', (req, res) => {
 
 })
 
-
-
 //routes
 require('./routes/index.js')(app);
 //db connect
@@ -38,7 +36,7 @@ mongoose.connect(config.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true
 )
 
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 //port to listen to
 app.listen(PORT, () => {
     console.log("Server is live on your desired port");

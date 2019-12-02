@@ -11,12 +11,10 @@ module.exports = (app) => {
 
     app.get('/api/categories/:id',  category.findOne);
 
-    app.post('/api/categories', [check, verify], item.createItem);
+    app.post('/api/categories', [check, verify], category.createCategory);
 
-    app.put('/api/item/update/:id', [check, verify], item.editItem);
+    app.put('/api/item/update/:id', [check, verify], category.editCategory);
 
-    app.delete('/api/item/remove/:id',[check, verify], item.deleteItem);
-
-    app.put('/api/items/verify/:id', [check, verify, admin], item.verifyItem);
+    app.delete('/api/item/remove/:id',[check, verify], category.deleteCategory);
 
 }

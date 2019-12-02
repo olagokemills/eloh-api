@@ -3,7 +3,7 @@ const Bid = require('../models/bid.model');
 //Get One User
 exports.findOne = async(req, res, next) => {
      try{
-         const bid = await Bid.findById(req.params.id);
+         const bid = await Bid.findById({_id:req.params.id, deleted:{$eq:false} });
          if(!bid)
           {
               res.status(404).send('Bid not found');
@@ -21,7 +21,7 @@ exports.findOne = async(req, res, next) => {
 //Read all users
 exports.findAll = async(req, res, next) => {
         try{
-        const bid = await Bid.find({});
+        const bid = await Bid.find({ deleted:{$eq:false}});
         res.send(bid);
         next();
             }catch(err){
@@ -35,7 +35,7 @@ exports.findAll = async(req, res, next) => {
 
 exports.findByItemId = async(req, res, next) => {
       try{
-      const bid = await Bid.find({itemId: req.params.id});
+      const bid = await Bid.find({itemId: req.params.id, deleted:{$eq:false}});
       res.send(bid);
       next();
           }catch(err){
@@ -49,7 +49,7 @@ exports.findByItemId = async(req, res, next) => {
 
 exports.findByUserId = async(req, res, next) => {
       try{
-      const bid = await Bid.find({userId: req.params.id});
+      const bid = await Bid.find({userId: req.params.id, deleted:{$eq:false}});
       res.send(bid);
       next();
           }catch(err){
@@ -82,7 +82,7 @@ exports.createBid = async(req, res) => {
   
 exports.deleteBid = async(req, res)=>{
     try{
-        const bid = await Bid.findByIdAndRemove({
+        const bid = await Bid.deleteById({
             _id: req.params.id
         })
         console.log(bid);
@@ -96,6 +96,13 @@ exports.deleteBid = async(req, res)=>{
 
   }
 
+
+//   Del.deleteById(_id, function (err, petDocument) {
+//     if(err)
+//     console.log(err)
+//     console.log(petDocument)
+//     // mongodb: { deleted: true, name: 'Fluffy', _id: '53da93b1...' }
+// });
 
   
 exports.updateBid = async (req, res) => {

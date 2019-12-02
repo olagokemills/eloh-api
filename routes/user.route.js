@@ -8,7 +8,9 @@ module.exports = (app) => {
     app.get('/api/users',verify, users.findAll);
 
     //Get specific user
-    // app.get('/api/user/:userId', verifyToken, users.findOne);
+    app.get('/api/user/:id', verify, users.findOne);
+
+    //app.get('/api/bid/:id', [check, verify], bid.findOne);
 
     //Create User
     app.post('/api/users/', users.createUser);

@@ -22,7 +22,7 @@ exports.findUserFav = async(req, res, next) => {
 //Read all favourited items, admin alone!
 exports.findAll = async(req, res, next) => {
         try{
-        const favour = await Favour.find({});
+        const favour = await Favour.find({ deleted:{$eq:false} });
         res.send(favour);
         next();
             }catch(err){
