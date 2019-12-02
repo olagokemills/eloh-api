@@ -21,6 +21,11 @@ const bidSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        userId:{
+            type:ObjectId,
+            required:true,
+            trim:true
+        },
         bid_by:{
             type: String,
             required: true,

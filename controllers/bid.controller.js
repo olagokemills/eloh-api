@@ -33,6 +33,33 @@ exports.findAll = async(req, res, next) => {
           }    
     }
 
+exports.findByItemId = async(req, res, next) => {
+      try{
+      const bid = await Bid.find({itemId: req.params.id});
+      res.send(bid);
+      next();
+          }catch(err){
+              return next(res.json({
+                  message: "something went wrong",
+                 // authData
+              })
+            )
+        }    
+  }  
+
+exports.findByUserId = async(req, res, next) => {
+      try{
+      const bid = await Bid.find({userId: req.params.id});
+      res.send(bid);
+      next();
+          }catch(err){
+              return next(res.json({
+                  message: "something went wrong",
+                 // authData
+              })
+            )
+        }    
+  }
 
 exports.createBid = async(req, res) => {
         //Check for content

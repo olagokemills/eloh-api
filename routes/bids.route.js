@@ -10,6 +10,10 @@ module.exports = (app) => {
 
     app.get('/api/bid/:id', [check, verify], bid.findOne);
 
+    app.get('/api/bid/getUserBid/:id', [check, verify], bid.findByUserId);
+
+    app.get('/api/bid/getItemId/:id', [check, verify], bid.findByItemId);
+
     app.post('/api/bid', [check, verify], bid.createBid);
 
     app.put('/api/bid/update/:id', [check, verify], bid.updateBid);
@@ -18,7 +22,4 @@ module.exports = (app) => {
 
     app.put('/api/bids/verify/:id',[check, verify], bid.acceptBid);
 
-    app.delete('/api/del/:id', del.deleteDel);
-    app.post('/api/del/', del.addDel);
-    app.get('/api/del/', del.getDel);
 }
