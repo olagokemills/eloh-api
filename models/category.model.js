@@ -12,7 +12,7 @@ const categorySchema = new mongoose.Schema(
             trim: true
         },
         description:{
-            type: ObjectId,
+            type: String,
             required: true,
             trim: true
         },  

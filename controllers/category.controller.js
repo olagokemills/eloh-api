@@ -10,7 +10,7 @@ exports.findOne = async(req, res, next) => {
           {
               res.status(404).send('Category not found');
           }
-         res.send(item)
+         res.send(category)
      }catch(err){
         return next(res.json({
             message: "Something went wrong",
@@ -56,7 +56,7 @@ exports.createCategory = async(req, res) => {
 exports.deleteCategory = async(req, res)=>{
 
     try{
-        const category = await Category.findByIdAndRemove({
+        const category = await Category.deleteById({
             _id: req.params.id
         })
         if(!category){

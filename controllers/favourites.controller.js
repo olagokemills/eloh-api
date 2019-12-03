@@ -45,7 +45,7 @@ exports.createFav= async(req, res) => {
           try {
             const favour = await Favour.create(req.body)
         
-            return res.status(201).send({message:"Favourites created created!"})
+            return res.status(201).send({message:"Favourites created!"})
             
           } catch (e) {
             return res.status(500).send({message: "Something went wrong"})
@@ -56,7 +56,7 @@ exports.createFav= async(req, res) => {
 exports.deleteFav = async(req, res)=>{
 
     try{
-        const favour = await Favour.findByIdAndRemove({
+        const favour = await Favour.deleteById({
             _id: req.params.id
         })
         if(!favour){

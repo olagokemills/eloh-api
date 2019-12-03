@@ -13,8 +13,8 @@ module.exports = (app) => {
 
     app.post('/api/categories', [check, verify], category.createCategory);
 
-    app.put('/api/item/update/:id', [check, verify], category.editCategory);
+    app.put('/api/categories/update/:id', [check, verify], category.editCategory);
 
-    app.delete('/api/item/remove/:id',[check, verify], category.deleteCategory);
+    app.delete('/api/categories/remove/:id',[check, verify], category.deleteCategory);
 
 }
