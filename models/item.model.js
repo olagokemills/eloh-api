@@ -50,6 +50,7 @@ const itemSchema = new mongoose.Schema(
         },
         min_bid:{
             type: String,
+            required:true,
         },
         other_img:{
             type:Array

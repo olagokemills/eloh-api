@@ -78,7 +78,7 @@ exports.createItem = async(req, res) => {
             return res.status(201).send({message:"Item created!"})
             
           } catch (e) {
-            return res.status(500).send({message: "Something went wrong"})
+            return res.status(500).send(e)
         }
   }
 

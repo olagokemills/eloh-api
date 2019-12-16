@@ -53,7 +53,7 @@ exports.findAll = async(req, res, next) => {
 //Create User
 exports.createUser = async(req, res) => {
        // Required fields check
-        if (!req.body.email || !req.body.password || !req.body.username ) {
+        if (!req.body.email || !req.body.password) {
             return res.status(400).send({ message: 'Incomplete details, try again' })
           }
 
